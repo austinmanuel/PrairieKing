@@ -6,6 +6,16 @@ pygame.font.init()
 
 from settings import *
 
+class PrairieKing(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.image.load(os.path.join('Assets','prairie_king.png'))
+        self.image.set_colorkey(MAGENTA)
+        self.image.convert()
+        self.rect = self.image.get_rect()
+        self.x = 450
+        self.y = 450
+
 def pk_handle_movement(keys_pressed, pk):
     if keys_pressed[pygame.K_a]:
         pk.x -= VELOCITY
@@ -67,14 +77,16 @@ def pk_handle_bullets(pk_bullets):
 
 def draw_window(pk, pk_bullets):
     WIN.blit(BG, (0,0))
-    WIN.blit(CHARACTER, (pk.x, pk.y))
+    WIN.blit(pk.rect, (pk.x, pk.y))
     for bullet in pk_bullets:
         WIN.blit(BULLET, (bullet[1].x, bullet[1].y))
 
     pygame.display.update()
 
 def main():
-    pk = pygame.Rect(450, 430, CHARACTER_WIDTH, CHARACTER_HEIGHT)
+    pk = PrairieKing()
+    pk_group = pygame.sprite.Group()
+    pk_group.add(pk)
     pk_bullets = []
 
     clock = pygame.time.Clock()
