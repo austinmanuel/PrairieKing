@@ -4,6 +4,7 @@ from pygame import key
 pygame.init()
 
 from settings import *
+from utils import *
 import prairieking as pk
 
 def draw_window(pk_group, king_bullets):

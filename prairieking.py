@@ -1,7 +1,7 @@
 import pygame
 from settings import *
 
-CHARACTER_IMAGE = pygame.image.load(os.path.join('Assets','prairie_king.png'))
+CHARACTER_IMAGE = pygame.image.load(os.path.join('Assets','sprites','prairie_king','prairie_king.png'))
 CHARACTER_IMAGE.set_colorkey(MAGENTA)
 CHARACTER_IMAGE = CHARACTER_IMAGE.convert()
 CHARACTER = pygame.transform.scale(CHARACTER_IMAGE, (TILE_WIDTH, TILE_HEIGHT))

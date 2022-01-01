@@ -19,5 +19,5 @@ RATE_OF_FIRE = 300
 # Pygame Settings
 pygame.display.set_caption("Journey of the Prairie King")
 WIN = pygame.display.set_mode((DISPLAY_WIDTH, DISPLAY_HEIGHT))
-BG = pygame.transform.scale(pygame.image.load(os.path.join('Assets','JOPK_Level_1_1.png')), (DISPLAY_WIDTH, DISPLAY_HEIGHT))
+BG = pygame.transform.scale(pygame.image.load(os.path.join('Assets','maps','JOPK_Level_1_1.png')), (DISPLAY_WIDTH, DISPLAY_HEIGHT))
 CHARACTER_HIT = pygame.USEREVENT + 1
