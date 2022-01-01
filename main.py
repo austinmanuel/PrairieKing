@@ -1,30 +1,32 @@
 import pygame
 from pygame import key
 
-pygame.font.init()
-#pygame.mixer.init()
+pygame.init()
 
 from settings import *
 
 class PrairieKing(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load(os.path.join('Assets','prairie_king.png'))
+        self.image = CHARACTER
         self.image.set_colorkey(MAGENTA)
         self.image.convert()
-        self.rect = self.image.get_rect()
         self.x = 450
         self.y = 450
+        self.rect = (self.x, self.y)
 
-def pk_handle_movement(keys_pressed, pk):
-    if keys_pressed[pygame.K_a]:
-        pk.x -= VELOCITY
-    if keys_pressed[pygame.K_d]:
-        pk.x += VELOCITY
-    if keys_pressed[pygame.K_w]:
-        pk.y -= VELOCITY
-    if keys_pressed[pygame.K_s]:
-        pk.y += VELOCITY
+    def pk_handle_movement(self, keys_pressed):
+        if keys_pressed[pygame.K_a]:
+            self.x -= VELOCITY
+        if keys_pressed[pygame.K_d]:
+            self.x += VELOCITY
+        if keys_pressed[pygame.K_w]:
+            self.y -= VELOCITY
+        if keys_pressed[pygame.K_s]:
+            self.y += VELOCITY
+    
+    def update(self, keys_pressed):
+        self.pk_handle_movement(keys_pressed)
 
 def pk_fire(keys_pressed, pk, pk_bullets):
     if keys_pressed[pygame.K_UP] and keys_pressed[pygame.K_LEFT]:
@@ -75,9 +77,9 @@ def pk_handle_bullets(pk_bullets):
             bullet[1].x += BULLET_VELOCITY
             bullet[1].y += BULLET_VELOCITY
 
-def draw_window(pk, pk_bullets):
+def draw_window(pk_group, pk_bullets):
     WIN.blit(BG, (0,0))
-    WIN.blit(pk.rect, (pk.x, pk.y))
+    pk_group.draw(WIN)
     for bullet in pk_bullets:
         WIN.blit(BULLET, (bullet[1].x, bullet[1].y))
 
@@ -93,6 +95,7 @@ def main():
     oldtime = pygame.time.get_ticks()
     run = True
     pygame.event.clear()
+    pk_group.draw(WIN)
 
     while run:
         clock.tick(FPS)
@@ -108,9 +111,10 @@ def main():
                 pk_fire(keys_pressed, pk, pk_bullets)
                 oldtime = newtime
         
-        pk_handle_movement(keys_pressed, pk)
+        pk_group.update(keys_pressed)
+        #pk_handle_movement(keys_pressed, pk)
         pk_handle_bullets(pk_bullets)
-        draw_window(pk, pk_bullets)
+        draw_window(pk_group, pk_bullets)
          
 
     main()
