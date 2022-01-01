@@ -14,45 +14,51 @@ class PrairieKing(pygame.sprite.Sprite):
         self.x = 450
         self.y = 450
         self.rect = (self.x, self.y)
+        self.width = TILE_WIDTH
+        self.height = TILE_HEIGHT
 
     def pk_handle_movement(self, keys_pressed):
-        if keys_pressed[pygame.K_a]:
+        if keys_pressed[pygame.K_a] and self.x > TILE_WIDTH:
             self.x -= VELOCITY
-        if keys_pressed[pygame.K_d]:
+            self.rect = (self.x, self.y)
+        if keys_pressed[pygame.K_d] and self.x < DISPLAY_WIDTH - TILE_WIDTH * 2:
             self.x += VELOCITY
-        if keys_pressed[pygame.K_w]:
+            self.rect = (self.x, self.y)
+        if keys_pressed[pygame.K_w] and self.y > TILE_HEIGHT:
             self.y -= VELOCITY
-        if keys_pressed[pygame.K_s]:
+            self.rect = (self.x, self.y)
+        if keys_pressed[pygame.K_s] and self.y < DISPLAY_HEIGHT - TILE_HEIGHT * 2:
             self.y += VELOCITY
+            self.rect = (self.x, self.y)
     
     def update(self, keys_pressed):
         self.pk_handle_movement(keys_pressed)
 
-def pk_fire(keys_pressed, pk, pk_bullets):
-    if keys_pressed[pygame.K_UP] and keys_pressed[pygame.K_LEFT]:
-        bullet = pygame.Rect(pk.x, pk.y, 10, 5)
-        pk_bullets.append(['ul', bullet])
-    elif keys_pressed[pygame.K_UP] and keys_pressed[pygame.K_RIGHT]:
-        bullet = pygame.Rect(pk.x + pk.width, pk.y, 10, 5)
-        pk_bullets.append(['ur', bullet])
-    elif keys_pressed[pygame.K_DOWN] and keys_pressed[pygame.K_LEFT]:
-        bullet = pygame.Rect(pk.x, pk.y + pk.height, 10, 5)
-        pk_bullets.append(['dl', bullet])
-    elif keys_pressed[pygame.K_DOWN] and keys_pressed[pygame.K_RIGHT]:
-        bullet = pygame.Rect(pk.x + pk.width, pk.y + pk.height, 10, 5)
-        pk_bullets.append(['dr', bullet])
-    elif keys_pressed[pygame.K_LEFT]:
-        bullet = pygame.Rect(pk.x - 5, pk.y + pk.height//2, 10, 5)
-        pk_bullets.append(['l', bullet])
-    elif keys_pressed[pygame.K_RIGHT]:
-        bullet = pygame.Rect(pk.x + pk.width, pk.y + pk.height//2, 10, 5)
-        pk_bullets.append(['r', bullet])
-    elif keys_pressed[pygame.K_UP]:
-        bullet = pygame.Rect(pk.x + pk.width//2, pk.y - 5, 10, 5)
-        pk_bullets.append(['u', bullet])
-    elif keys_pressed[pygame.K_DOWN]:
-        bullet = pygame.Rect(pk.x + pk.width//2, pk.y + pk.height, 10, 5)
-        pk_bullets.append(['d', bullet])
+    def pk_fire(self, keys_pressed, pk, pk_bullets):
+        if keys_pressed[pygame.K_UP] and keys_pressed[pygame.K_LEFT]:
+            bullet = pygame.Rect(pk.x, pk.y, 10, 5)
+            pk_bullets.append(['ul', bullet])
+        elif keys_pressed[pygame.K_UP] and keys_pressed[pygame.K_RIGHT]:
+            bullet = pygame.Rect(pk.x + pk.width, pk.y, 10, 5)
+            pk_bullets.append(['ur', bullet])
+        elif keys_pressed[pygame.K_DOWN] and keys_pressed[pygame.K_LEFT]:
+            bullet = pygame.Rect(pk.x, pk.y + pk.height, 10, 5)
+            pk_bullets.append(['dl', bullet])
+        elif keys_pressed[pygame.K_DOWN] and keys_pressed[pygame.K_RIGHT]:
+            bullet = pygame.Rect(pk.x + pk.width, pk.y + pk.height, 10, 5)
+            pk_bullets.append(['dr', bullet])
+        elif keys_pressed[pygame.K_LEFT]:
+            bullet = pygame.Rect(pk.x - 5, pk.y + pk.height//2, 10, 5)
+            pk_bullets.append(['l', bullet])
+        elif keys_pressed[pygame.K_RIGHT]:
+            bullet = pygame.Rect(pk.x + pk.width, pk.y + pk.height//2, 10, 5)
+            pk_bullets.append(['r', bullet])
+        elif keys_pressed[pygame.K_UP]:
+            bullet = pygame.Rect(pk.x + pk.width//2, pk.y - 5, 10, 5)
+            pk_bullets.append(['u', bullet])
+        elif keys_pressed[pygame.K_DOWN]:
+            bullet = pygame.Rect(pk.x + pk.width//2, pk.y + pk.height, 10, 5)
+            pk_bullets.append(['d', bullet])
 
 def pk_handle_bullets(pk_bullets):
     for bullet in pk_bullets:
@@ -65,17 +71,17 @@ def pk_handle_bullets(pk_bullets):
         if bullet[0] == 'd':
             bullet[1].y += BULLET_VELOCITY
         if bullet[0] == 'ul':
-            bullet[1].x -= BULLET_VELOCITY
-            bullet[1].y -= BULLET_VELOCITY
+            bullet[1].x -= int(BULLET_VELOCITY * .7)
+            bullet[1].y -= int(BULLET_VELOCITY * .7)
         if bullet[0] == 'ur':
-            bullet[1].x += BULLET_VELOCITY
-            bullet[1].y -= BULLET_VELOCITY
+            bullet[1].x += int(BULLET_VELOCITY * .7)
+            bullet[1].y -= int(BULLET_VELOCITY * .7)
         if bullet[0] == 'dl':
-            bullet[1].x -= BULLET_VELOCITY
-            bullet[1].y += BULLET_VELOCITY
+            bullet[1].x -= int(BULLET_VELOCITY * .7)
+            bullet[1].y += int(BULLET_VELOCITY * .7)
         if bullet[0] == 'dr':
-            bullet[1].x += BULLET_VELOCITY
-            bullet[1].y += BULLET_VELOCITY
+            bullet[1].x += int(BULLET_VELOCITY * .7)
+            bullet[1].y += int(BULLET_VELOCITY * .7)
 
 def draw_window(pk_group, pk_bullets):
     WIN.blit(BG, (0,0))
@@ -108,11 +114,11 @@ def main():
 
         if keys_pressed:
             if newtime - oldtime > RATE_OF_FIRE:
-                pk_fire(keys_pressed, pk, pk_bullets)
+                pk.pk_fire(keys_pressed, pk, pk_bullets)
                 oldtime = newtime
         
-        pk_group.update(keys_pressed)
-        #pk_handle_movement(keys_pressed, pk)
+            pk_group.update(keys_pressed)
+        pk.pk_handle_movement(keys_pressed)
         pk_handle_bullets(pk_bullets)
         draw_window(pk_group, pk_bullets)
          
