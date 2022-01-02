@@ -17,7 +17,6 @@ class Enemy(pygame.sprite.Sprite, enemy_type):
         if enemy_type == 'spike':
             pass
         self.image = self.image[self.index]
-        self.image.convertalpha()
         self.rect = (self.x, self.y)
         self.width = TILE_WIDTH
         self.height = TILE_HEIGHT

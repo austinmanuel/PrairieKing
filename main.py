@@ -41,9 +41,7 @@ def main():
                 king.pk_fire(keys_pressed, king, king_bullets)
                 oldtime = newtime
 
-            pk_group.update(keys_pressed)
-        king.pk_handle_movement(keys_pressed)
-        king.pk_handle_bullets(king_bullets)
+            pk_group.update(keys_pressed, king_bullets)
         draw_window(pk_group, king_bullets)
 
 

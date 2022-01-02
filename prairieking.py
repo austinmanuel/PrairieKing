@@ -24,21 +24,54 @@ class PrairieKing(pygame.sprite.Sprite):
         self.height = TILE_HEIGHT
 
     def pk_handle_movement(self, keys_pressed):
-        if keys_pressed[pygame.K_a] and self.x > TILE_WIDTH:
+        # Up Left
+        if keys_pressed[pygame.K_a] and keys_pressed[pygame.K_w]:
+            if self.x > TILE_WIDTH:
+                self.x -= VELOCITY * 0.7
+            if self.y > TILE_HEIGHT:
+                self.y -= VELOCITY * 0.7
+            self.rect = (self.x, self.y)
+        # Down Left
+        elif keys_pressed[pygame.K_a] and keys_pressed[pygame.K_s]:
+            if self.x > TILE_WIDTH:
+                self.x -= VELOCITY * 0.7
+            if self.y < DISPLAY_HEIGHT - TILE_HEIGHT * 2:
+                self.y += VELOCITY * 0.7
+            self.rect = (self.x, self.y)
+        # Up Right
+        elif keys_pressed[pygame.K_d] and keys_pressed[pygame.K_w]:
+            if self.x < DISPLAY_WIDTH - TILE_WIDTH * 2:
+                self.x += VELOCITY * 0.7
+            if self.y > TILE_HEIGHT:
+                self.y -= VELOCITY * 0.7
+            self.rect = (self.x, self.y)
+        # Down Right
+        elif keys_pressed[pygame.K_d] and keys_pressed[pygame.K_s]:
+            if self.x < DISPLAY_WIDTH - TILE_WIDTH * 2:
+                self.x += VELOCITY * 0.7
+            if self.y < DISPLAY_HEIGHT - TILE_HEIGHT * 2:
+                self.y += VELOCITY * 0.7
+            self.rect = (self.x, self.y)
+        # Left
+        elif keys_pressed[pygame.K_a] and self.x > TILE_WIDTH:
             self.x -= VELOCITY
             self.rect = (self.x, self.y)
-        if keys_pressed[pygame.K_d] and self.x < DISPLAY_WIDTH - TILE_WIDTH * 2:
+        # Right
+        elif keys_pressed[pygame.K_d] and self.x < DISPLAY_WIDTH - TILE_WIDTH * 2:
             self.x += VELOCITY
             self.rect = (self.x, self.y)
-        if keys_pressed[pygame.K_w] and self.y > TILE_HEIGHT:
+        # Up
+        elif keys_pressed[pygame.K_w] and self.y > TILE_HEIGHT:
             self.y -= VELOCITY
             self.rect = (self.x, self.y)
-        if keys_pressed[pygame.K_s] and self.y < DISPLAY_HEIGHT - TILE_HEIGHT * 2:
+        # Down
+        elif keys_pressed[pygame.K_s] and self.y < DISPLAY_HEIGHT - TILE_HEIGHT * 2:
             self.y += VELOCITY
             self.rect = (self.x, self.y)
 
-    def update(self, keys_pressed):
+    def update(self, keys_pressed, king_bullets):
         self.pk_handle_movement(keys_pressed)
+        self.pk_handle_bullets(king_bullets)
 
     def pk_fire(self, keys_pressed, pk, king_bullets):
         if keys_pressed[pygame.K_UP] and keys_pressed[pygame.K_LEFT]:
