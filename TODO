@@ -1,0 +1,21 @@
+Set the splash screen and "Press any key" message
+Make and set up directions box
+Create a larger window with the item, coin, life, time, and upgrade trackers
+Set up bullet collision with the border and with collision-aware sprites
+Set up rudimentary AI for the enemies
+Give the hero a real sprite with changing animations
+Make borders for the map
+Make sprites for the fences, stumps, bushes, and graves
+Make sprites for the upgrades
+Make logic for the upgrades
+Set up spawning for the enemies
+Set up loot drop system for killed enemies
+Set up map / level change
+Make shopkeeper sprite
+Add shop with upgrade purchasing
+Make shopkeeper walking script
+Make the bosses and boss levels
+
+
+
+Add Sound
