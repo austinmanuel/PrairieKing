@@ -14,64 +14,45 @@ class PrairieKing(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.image = CHARACTER
-        self.x = 450
-        self.y = 450
+        self.x = TILE * 10
+        self.y = TILE * 10
         self.rect = (self.x, self.y)
         self.width = TILE
         self.height = TILE
         self.oldtime = pygame.time.get_ticks()
         self.bullets = []
 
-    def pk_handle_movement(self, keys_pressed):
-        # Up Left
-        if keys_pressed[pygame.K_a] and keys_pressed[pygame.K_w]:
-            if self.x > TILE:
-                self.x -= VELOCITY * 0.7
-            if self.y > TILE:
-                self.y -= VELOCITY * 0.7
-            self.rect = (self.x, self.y)
-        # Down Left
-        elif keys_pressed[pygame.K_a] and keys_pressed[pygame.K_s]:
-            if self.x > TILE:
-                self.x -= VELOCITY * 0.7
-            if self.y < DISPLAY_HEIGHT - TILE * 2:
-                self.y += VELOCITY * 0.7
-            self.rect = (self.x, self.y)
-        # Up Right
-        elif keys_pressed[pygame.K_d] and keys_pressed[pygame.K_w]:
-            if self.x < DISPLAY_WIDTH - TILE * 2:
-                self.x += VELOCITY * 0.7
-            if self.y > TILE:
-                self.y -= VELOCITY * 0.7
-            self.rect = (self.x, self.y)
-        # Down Right
-        elif keys_pressed[pygame.K_d] and keys_pressed[pygame.K_s]:
-            if self.x < DISPLAY_WIDTH - TILE * 2:
-                self.x += VELOCITY * 0.7
-            if self.y < DISPLAY_HEIGHT - TILE * 2:
-                self.y += VELOCITY * 0.7
-            self.rect = (self.x, self.y)
-        # Left
-        elif keys_pressed[pygame.K_a] and self.x > TILE:
-            self.x -= VELOCITY
-            self.rect = (self.x, self.y)
-        # Right
-        elif keys_pressed[pygame.K_d] and self.x < DISPLAY_WIDTH - TILE * 2:
-            self.x += VELOCITY
-            self.rect = (self.x, self.y)
-        # Up
-        elif keys_pressed[pygame.K_w] and self.y > TILE:
-            self.y -= VELOCITY
-            self.rect = (self.x, self.y)
-        # Down
-        elif keys_pressed[pygame.K_s] and self.y < DISPLAY_HEIGHT - TILE * 2:
-            self.y += VELOCITY
-            self.rect = (self.x, self.y)
-
-    def update(self, keys_pressed):
+    def update(self, keys_pressed, enemy_group):
         self.pk_handle_movement(keys_pressed)
         self.pk_handle_bullets()
         self.pk_check_fire(keys_pressed)
+
+    def pk_handle_movement(self, keys_pressed):
+        # Left
+        if keys_pressed[pygame.K_a] and self.x > TILE * 3:
+            if keys_pressed[pygame.K_w] or keys_pressed[pygame.K_s]:
+                self.x -= VELOCITY * 0.7
+            else:
+                self.x -= VELOCITY
+        # Right
+        if keys_pressed[pygame.K_d] and self.x < TILE * 16:
+            if keys_pressed[pygame.K_w] or keys_pressed[pygame.K_s]:
+                self.x += VELOCITY * 0.7
+            else:
+                self.x += VELOCITY
+        # Up
+        if keys_pressed[pygame.K_w] and self.y > TILE * 3:
+            if keys_pressed[pygame.K_a] or keys_pressed[pygame.K_d]:
+                self.y -= VELOCITY * 0.7
+            else:
+                self.y -= VELOCITY
+        # Down
+        if keys_pressed[pygame.K_s] and self.y < TILE * 16:
+            if keys_pressed[pygame.K_a] or keys_pressed[pygame.K_d]:
+                self.y += VELOCITY * 0.7
+            else:
+                self.y += VELOCITY
+        self.rect = (self.x, self.y)
 
     def pk_check_fire(self, keys_pressed):
         if pygame.time.get_ticks() - self.oldtime > RATE_OF_FIRE:
@@ -129,3 +110,12 @@ class PrairieKing(pygame.sprite.Sprite):
             if bullet[0] == 'dr':
                 bullet[1].x += int(BULLET_VELOCITY * .7)
                 bullet[1].y += int(BULLET_VELOCITY * .7)
+        for bullet in self.bullets:
+            if bullet[1].x < TILE * 3:
+                self.bullets.remove(bullet)
+            elif bullet[1].x + BULLET_WIDTH > TILE * 17:
+                self.bullets.remove(bullet)
+            elif bullet[1].y + BULLET_HEIGHT > TILE * 17:
+                self.bullets.remove(bullet)
+            elif bullet[1].y < TILE * 3:
+                self.bullets.remove(bullet)

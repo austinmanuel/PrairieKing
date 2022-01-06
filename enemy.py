@@ -13,19 +13,19 @@ class Enemy(pygame.sprite.Sprite):
         self.rect = (self.x, self.y)
         self.images = []
         self.index = 0
-        self.width = TILE
-        self.height = TILE
+        self.width = 56
+        self.height = 56
         self.animation_frames = self.get_frames()
         self.image = self.animation_frames[self.index]
         self.oldtime = pygame.time.get_ticks()
 
     def update(self, king_pos):
-        self.image = self.animation_frames[(self.index % 2)]
+        self.image = pygame.transform.scale(self.animation_frames[(self.index % 2)],(TILE, TILE))
         newtime = pygame.time.get_ticks()
         if newtime - self.oldtime > 450:
             self.index += 1
             self.oldtime = newtime
-        self.enemy_handle_movement(king_pos)
+        #self.enemy_handle_movement(king_pos)
 
     def get_frames(self):
         animation_frames = []
