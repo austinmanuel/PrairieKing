@@ -1,6 +1,7 @@
 import pygame
 import os
 import random
+import prairieking
 from settings import *
 
 class Enemy(pygame.sprite.Sprite):
@@ -18,12 +19,13 @@ class Enemy(pygame.sprite.Sprite):
         self.image = self.animation_frames[self.index]
         self.oldtime = pygame.time.get_ticks()
 
-    def update(self):
+    def update(self, king_pos):
         self.image = self.animation_frames[(self.index % 2)]
         newtime = pygame.time.get_ticks()
         if newtime - self.oldtime > 450:
             self.index += 1
             self.oldtime = newtime
+        self.enemy_handle_movement(king_pos)
 
     def get_frames(self):
         animation_frames = []
@@ -42,3 +44,14 @@ class Enemy(pygame.sprite.Sprite):
         image.blit(self.sheet, (0, 0), ((frame * width), 0, width, height))
         image = pygame.transform.scale(image, (width * scale, height * scale))
         return image
+
+    def enemy_handle_movement(self, king_pos):
+        if self.x > king_pos[0]:
+            self.x -= VELOCITY // 2
+        elif self.x < king_pos[0]:
+            self.x += VELOCITY // 2
+        if self.y > king_pos[1]:
+            self.y -= VELOCITY // 2
+        elif self.y < king_pos[1]:
+            self.y += VELOCITY // 2
+        self.rect = (self.x, self.y)

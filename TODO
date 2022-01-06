@@ -1,4 +1,3 @@
-Set the splash screen and "Press any key" message
 Make and set up directions box
 Create a larger window with the item, coin, life, time, and upgrade trackers
 Set up bullet collision with the border and with collision-aware sprites

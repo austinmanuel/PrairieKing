@@ -34,7 +34,35 @@ def draw_window(pk_group, king, enemy_group):
 
     pygame.display.update()
 
+def game_intro():
+    intro = True
+
+    font = pygame.font.Font('freesansbold.ttf', 16)
+    text = font.render('Press any key to continue', True, WHITE)
+    textRect = text.get_rect()
+    textRect.center = (DISPLAY_WIDTH / 2, DISPLAY_HEIGHT - (DISPLAY_HEIGHT // 2)
+        + (DISPLAY_HEIGHT // 4))
+
+    WINDOW.fill(BLACK)
+    WINDOW.blit(SPLASH, (DISPLAY_WIDTH / 2 - (DISPLAY_WIDTH / 4),
+        DISPLAY_HEIGHT / 2 - (DISPLAY_HEIGHT / 4)))
+    WINDOW.blit(text, textRect)
+
+    while intro:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                intro = False
+                pygame.quit()
+                exit()
+            if event.type == pygame.KEYDOWN:
+                intro = False
+
+
+        pygame.display.update()
+
 def main():
+    game_intro()
+
     king = pk.PrairieKing()
     pk_group = pygame.sprite.Group()
     pk_group.add(king)
@@ -57,7 +85,7 @@ def main():
                 exit()
 
         pk_group.update(keys_pressed)
-        enemy_group.update()
+        enemy_group.update((king.x, king.y))
         draw_window(pk_group, king, enemy_group)
 
 if __name__ == "__main__":
