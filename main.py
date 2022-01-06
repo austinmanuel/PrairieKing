@@ -82,7 +82,11 @@ def main():
             if event.type == pygame.QUIT:
                 run = False
                 pygame.quit()
-                exit()
+                quitad()
+            if keys_pressed[pygame.K_ESCAPE]:
+                run = False
+                pygame.quit()
+                quit()
 
         pk_group.update(keys_pressed)
         enemy_group.update((king.x, king.y))

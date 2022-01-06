@@ -46,12 +46,22 @@ class Enemy(pygame.sprite.Sprite):
         return image
 
     def enemy_handle_movement(self, king_pos):
-        if self.x > king_pos[0]:
-            self.x -= VELOCITY // 2
+        SPEED = SLOW_ENEMY_MOVEMENT
+        if (self.x > king_pos[0]) and (self.x - SPEED >= king_pos[0]):
+            self.x -= SPEED
+        elif self.x > king_pos[0]:
+            self.x = king_pos[0]
+        elif (self.x < king_pos[0]) and (self.x + SPEED <= king_pos[0]):
+            self.x += SPEED
         elif self.x < king_pos[0]:
-            self.x += VELOCITY // 2
-        if self.y > king_pos[1]:
-            self.y -= VELOCITY // 2
+            self.x = king_pos[0]
+
+        if (self.y > king_pos[1]) and (self.y - SPEED >= king_pos[1]):
+            self.y -= SPEED
+        elif self.y > king_pos[1]:
+            self.y = king_pos[1]
+        elif (self.y < king_pos[1]) and (self.y + SPEED <= king_pos[1]):
+            self.y += SPEED
         elif self.y < king_pos[1]:
-            self.y += VELOCITY // 2
+            self.y = king_pos[1]
         self.rect = (self.x, self.y)
